@@ -37,7 +37,7 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
       
       +0000000179769313486231570813e+289       7FEFFFFFFFFFFFFF   //largest integer
 
-                   +nan 0 C001 FEED C0DE       7FF8C001FEEDC0DE   //sNaN with payload
+                   +nan 0 C001 FEED C0DE       7FF8C001FEEDC0DE   //quiet NaN with payload
                    
       +0000000000000000000000000494e-326       0000000000000001   //smallest (subnormal) number 
         
