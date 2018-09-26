@@ -41,7 +41,7 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
                    
       +0000000000000000000000000494e-326       0000000000000001   //smallest (subnormal) number 
         
-                  +snan 0 BAAD FEED C0DE       7FF0BAADFEEDC0DE   //sNaN with payload
+                  +snan 0 FEE1 600D C0DE       7FF0FEE1600DC0DE   //sNaN with payload
                   
       +0000000001298074214633707008e+000       43B203AF9EE75616   //1298074214633707008
 
