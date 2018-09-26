@@ -3,15 +3,15 @@
 ## IEEE 754-2008  H=20 "convertToDecimalCharacter"  
 ### Double-Precision FLoating-Point Operator for Xilinx UltraScale and UltraScale+ FPGAs
 
-(September 25, 2018) Written in Verilog RTL for implementation in Xilinx UltraScale and UltraScale+ brand FPGAs, this is probably the world's only synthesizable IEEE 754-2008 compliant, H=20 binary64 format  â€œconvertFromDecimalCharacterâ€ floating-point operator.  It is designed for ready incorporation into the new 64-bit, IEEE 754-2008 Floating-Point Instruction Set Architecture (ISA) CPU presently in development.
+(September 25, 2018) Written in Verilog RTL for implementation in Xilinx UltraScale and UltraScale+ brand FPGAs, this is probably the world's only synthesizable IEEE 754-2008 compliant, H=20 binary64 format "convertFromDecimalCharacter" floating-point operator.  It is designed for ready incorporation into the new 64-bit, IEEE 754-2008 Floating-Point Instruction Set Architecture (ISA) CPU presently in development.
 
-Its pipeline is only 17 clocks deep, meaning up to sixteen 34-byte results will be available for reading after 17 clocks from the first write of the binary64 format operand into each of this operator's sixteen 64-bit memory-mapped inputs.  
+Its pipeline is only 17 clocks deep, meaning that up to sixteen 34-byte results will be available for reading after 17 clocks from the first write of a binary64 format operand into each of this operator's sixteen 64-bit memory-mapped inputs.  
 
-Since the new IEEE 754-2008 ISA CPU design includes instructions that can read and write a 16-byte, 32-byte, 64-byte, 128-byte or 256-byte "gob" every clock cycle, up to sixteen 34-byte character sequences can be computed and written back out to system memory in as few as 34 clocks, which includes pushing each binary64 representation number into each operator input and reading each result out from their corresponding memory-mapped input/output address.
+Since the new IEEE 754-2008 ISA CPU design includes new instructions that can read and write a 16-byte, 32-byte, 64-byte, 128-byte or 256-byte "gob" every clock cycle, up to sixteen 34-byte character sequences can be computed and written back out to system memory in as few as 34 clocks, which includes pushing each binary64 representation number into each operator input and reading each result out from their corresponding memory-mapped input/output address.
 
-Stated another way, this design features sixteen memory-mapped inputs with corresponding result buffers that the 34-byte results automatically spill into.  When used with the SYMPL CPU â€œRepeatâ€ instruction, the effective/apparent latency is only one clock per conversion.  This is because by the time the CPU has written each of the sixteen operands, the results from the first writes are already available for reading.
+Stated another way, this design features sixteen memory-mapped inputs with corresponding result buffers that the 34-byte results automatically spill into.  When used with the SYMPL CPU "REPEAT" instruction, the effective/apparent latency is only one clock per conversion.  This is because by the time the CPU has written each of the sixteen operands, the results from the first writes are already available for reading.
 
-To accommodate easier implementation of its companion â€œconvertFromDecimalCharacterâ€ operator, the result character string format is fixed, right justified with up to 20 fraction-part digits, 21 integer-part digits or combination of up to 28 decimal character digits for results having both an integer part and fraction part.
+To accommodate easier implementation of its companion "convertFromDecimalCharacter" operator, the result character string format is fixed, right justified with up to 20 fraction-part digits, 21 integer-part digits or combination of up to 28 decimal character digits for results having both an integer part and fraction part.
 
 The exponent value is referenced relative to the last digit in the significand of the decimalCharacterSequence.  
 
@@ -29,7 +29,7 @@ Here is some example code written in SYMPL Intermediate Language (IL) that compu
 
 Note that the above requires only eight 64-bit instructions and consumes roughly 38 clocks to complete
 
-Below are actual results of sixteen consecutive pushes into the operator, one every clock, as demonstrated in the Verilog test bench provided in this repository.  The easiest way to see results for yourself is to run the simulation on the â€œfreeâ€ version of Xilinx Vivado using the files provided at this repository.  Then, in the Vivado simulation environment, simply click on the twoport RAM module in the design and scroll down to the first sixteen locations.  Set radix to ASCII to read the contents.
+Below are actual results of sixteen consecutive pushes into the operator, one every clock, as demonstrated in the Verilog test bench provided in this repository.  The easiest way to see results for yourself is to run the simulation on the "free" version of Xilinx Vivado using the files provided at this repository.  Then, in the Vivado simulation environment, simply click on the twoport RAM module in the design and scroll down to the first sixteen locations.  Set radix to ASCII to read the contents.
 ```
       34-byte Character Sequence Result        Binary64 Input     Comment
 
