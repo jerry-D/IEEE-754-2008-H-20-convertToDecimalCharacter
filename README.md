@@ -27,7 +27,7 @@ Here is some example code written in SYMPL Intermediate Language (IL) that compu
        REPEAT uw:#15                 ;load repeat counter with number results to read out                  
     g64 *AR3++[64] = g64:*AR2++[64]  ;pull sixteen 34-byte character sequences from their respective result buffers and write them to byte-addressable system memory
 
-Note that the above requires only eight 64-bit instructions and consumes roughly 38 clocks to complete
+Note that the above code for converting all sixteen binary64 numbers to decimalcharacterSequences requires only eight 64-bit instructions and consumes roughly 38 clocks to complete.
 
 Below are actual results of sixteen consecutive pushes into the operator, one every clock, as demonstrated in the Verilog test bench provided in this repository.  The easiest way to see results for yourself is to run the simulation on the "free" version of Xilinx Vivado using the files provided at this repository.  Then, in the Vivado simulation environment, simply click on the twoport RAM module in the design and scroll down to the first sixteen locations.  Set radix to ASCII to read the contents.
 ```
