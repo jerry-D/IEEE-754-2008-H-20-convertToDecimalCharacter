@@ -22,7 +22,7 @@ Here is some example code written in SYMPL Intermediate Language (IL) that compu
     uw AR0 = uw:#listStart           ;load read pointer with starting address of list
     uw AR1 = uw:#cnvTDCS.0           ;load write pointer with address of first operator input buffer
        REPEAT uw:#15                 ;load repeat counter with number of extra times the following instruction is to be executed              
-    ud cnvTDCS.0  = convertToDecimalCharacter:(ud:*AR0++[8], ub:#0)      ;push sixteen binary64 numbers into the operator
+    ud *AR1++[8]  = convertToDecimalCharacter:(ud:*AR0++[8], ub:#0)      ;push sixteen binary64 numbers into the operator
 
     uw AR2 = uw:#cnvTDCS.0           ;load read pointer with address of first operator result buffer
     uw AR3 = uw:#dest                ;load write pointer with first address of where the 64-byte "gob" will be stored in system memory
