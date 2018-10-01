@@ -35,13 +35,13 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
 ```
       34-byte Character Sequence Result        Binary64 Input     Comment
 
-      +3355443194222818687558174133e-020       417FFFFFFE26BBBA   //33554431.88445637375116348266
+      +3355443194222818687558174133e-020       417FFFFFFF135DDD   //33554431.94222818687558174133
       
-      +0000000179769313486231570813e+289       7FEFFFFFFFFFFFFF   //largest integer
+      +0000000179769313486231570815e+289       7FEFFFFFFFFFFFFF   //largest integer
 
                    +nan 0 C001 FEED C0DE       7FF8C001FEEDC0DE   //quiet NaN with payload
                    
-      +0000000000000000000000000494e-326       0000000000000001   //smallest (subnormal) number 
+      +0000000049406564584124654418e-343       0000000000000001   //smallest (subnormal) number 
         
                   +snan 0 FEE1 600D C0DE       7FF0FEE1600DC0DE   //sNaN with payload
                   
@@ -51,19 +51,19 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
 
                                     -inf       FFF0000000000000   //-infinity
                                     
-      +0000000078919994320999994168e-086       323546DB9A6A41D7   //78919994321e-77
+      +0000000078919994320999994169e-086       323546DB9A6A41D7   //78919994321e-77
 
       -0000000000000000000000000000e+000       8000000000000000   //-0
 
-      +0000000000000000000000000015e-001       3FF0000000000000   //+1.5
+      +0000000000000000000000000015e-001       3FF8000000000000   //+1.5
 
-      -0000000188815458970875003819e+270       FBFF000000000001   //-1.88815458970875003819e250
+      -0000000188815458970875003821e+270       FBFF000000000001   //-1.88815458970875003821e250
 
       +0000000073786976294838206464e+000       4410000000000000   //73786976294838206464
 
       +0000000022250738585072008889e-327       000FFFFFFFFFFFFF   //largest (subnormal)
 
-      -0000000000000000000000000015e-001       BFF0000000000000   //-1.5
+      -0000000000000000000000000015e-001       BFF8000000000000   //-1.5
 
                                     +inf       7FF0000000000000   //+infinity
                                     
