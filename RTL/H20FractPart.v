@@ -65,7 +65,9 @@ module H20FractPart (
     wrdata       ,  
     bcdFractOut  ,
     fractInexact ,
-    fractMask   
+    fractMask,
+    subnLeadZeros,
+    subnAddrs   
     );
 
 input CLK;
@@ -77,6 +79,8 @@ input [63:0]  wrdata;
 output [67:0] bcdFractOut;
 output        fractInexact;
 input  [51:0] fractMask;
+output [5:0] subnLeadZeros;
+output [5:0] subnAddrs;
 
 //rounding mode encodings
 parameter NEAREST = 2'b00;
@@ -147,6 +151,7 @@ reg [67:0] fractD20_fractD19__fractD18_fractD17____fractD16_fractD15__fractD14_f
 
 reg [67:0] fractFinal;
 reg [67:0] fractFinalq;
+
 wire [67:0] bcdFractOut;
 
 
@@ -211,68 +216,67 @@ reg [57:0] chafD20_chafD19__chafD18_chafD17____chafD16_chafD15__chafD14_chafD13_
 
 reg [57:0] chafFinal;
 
-reg [54:0] truncD52_truncD51; 
-reg [54:0] truncD50_truncD49;
-reg [54:0] truncD48_truncD47; 
-reg [54:0] truncD46_truncD45;
-reg [54:0] truncD44_truncD43; 
-reg [54:0] truncD42_truncD41;
-reg [54:0] truncD40_truncD39; 
-reg [54:0] truncD38_truncD37;
-reg [54:0] truncD36_truncD35; 
-reg [54:0] truncD34_truncD33;
-reg [54:0] truncD32_truncD31; 
-reg [54:0] truncD30_truncD29;
-reg [54:0] truncD28_truncD27; 
-reg [54:0] truncD26_truncD25;
-reg [54:0] truncD24_truncD23; 
-reg [54:0] truncD22_truncD21;
-reg [54:0] truncD20_truncD19; 
-reg [54:0] truncD18_truncD17;
-reg [54:0] truncD16_truncD15;                                                         
-reg [54:0] truncD14_truncD13;                                                         
-reg [54:0] truncD12_truncD11; 
-reg [54:0] truncD10_truncD9;
-reg [54:0] truncD8_truncD7;   
-reg [54:0] truncD6_truncD5;
-reg [54:0] truncD4_truncD3;   
-reg [54:0] truncD2_truncD1;
-reg [54:0] truncD0_0;
+reg [74:0] truncD52_truncD51; 
+reg [74:0] truncD50_truncD49;
+reg [74:0] truncD48_truncD47; 
+reg [74:0] truncD46_truncD45;
+reg [74:0] truncD44_truncD43; 
+reg [74:0] truncD42_truncD41;
+reg [74:0] truncD40_truncD39; 
+reg [74:0] truncD38_truncD37;
+reg [74:0] truncD36_truncD35; 
+reg [74:0] truncD34_truncD33;
+reg [74:0] truncD32_truncD31; 
+reg [74:0] truncD30_truncD29;
+reg [74:0] truncD28_truncD27; 
+reg [74:0] truncD26_truncD25;
+reg [74:0] truncD24_truncD23; 
+reg [74:0] truncD22_truncD21;
+reg [74:0] truncD20_truncD19; 
+reg [74:0] truncD18_truncD17;
+reg [74:0] truncD16_truncD15;                                                         
+reg [74:0] truncD14_truncD13;                                                         
+reg [74:0] truncD12_truncD11; 
+reg [74:0] truncD10_truncD9;
+reg [74:0] truncD8_truncD7;   
+reg [74:0] truncD6_truncD5;
+reg [74:0] truncD4_truncD3;   
+reg [74:0] truncD2_truncD1;
+reg [74:0] truncD0_0;
 
-reg [54:0] truncD52_truncD51__truncD50_truncD49;
-reg [54:0] truncD48_truncD47__truncD46_truncD45;
-reg [54:0] truncD44_truncD43__truncD42_truncD41;
-reg [54:0] truncD40_truncD39__truncD38_truncD37;
-reg [54:0] truncD36_truncD35__truncD34_truncD33;
-reg [54:0] truncD32_truncD31__truncD30_truncD29;
-reg [54:0] truncD28_truncD27__truncD26_truncD25;
-reg [54:0] truncD24_truncD23__truncD22_truncD21;
-reg [54:0] truncD20_truncD19__truncD18_truncD17;
-reg [54:0] truncD16_truncD15__truncD14_truncD13;
-reg [54:0] truncD12_truncD11__truncD10_truncD9; 
-reg [54:0] truncD8_truncD7__truncD6_truncD5;
-reg [54:0] truncD4_truncD3__truncD2_truncD1; 
-reg [54:0] truncD0_0__0;
+reg [74:0] truncD52_truncD51__truncD50_truncD49;
+reg [74:0] truncD48_truncD47__truncD46_truncD45;
+reg [74:0] truncD44_truncD43__truncD42_truncD41;
+reg [74:0] truncD40_truncD39__truncD38_truncD37;
+reg [74:0] truncD36_truncD35__truncD34_truncD33;
+reg [74:0] truncD32_truncD31__truncD30_truncD29;
+reg [74:0] truncD28_truncD27__truncD26_truncD25;
+reg [74:0] truncD24_truncD23__truncD22_truncD21;
+reg [74:0] truncD20_truncD19__truncD18_truncD17;
+reg [74:0] truncD16_truncD15__truncD14_truncD13;
+reg [74:0] truncD12_truncD11__truncD10_truncD9; 
+reg [74:0] truncD8_truncD7__truncD6_truncD5;
+reg [74:0] truncD4_truncD3__truncD2_truncD1; 
+reg [74:0] truncD0_0__0;
 
-reg [54:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45; 
-reg [54:0] truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37;
-reg [54:0] truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29; 
-reg [54:0] truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
-reg [54:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13; 
-reg [54:0] truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5;
-reg [54:0] truncD4_truncD3__truncD2_truncD1____truncD0_0__0;
+reg [74:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45; 
+reg [74:0] truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37;
+reg [74:0] truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29; 
+reg [74:0] truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
+reg [74:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13; 
+reg [74:0] truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5;
+reg [74:0] truncD4_truncD3__truncD2_truncD1____truncD0_0__0;
    
-reg [54:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45______truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37;
-reg [54:0] truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29______truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
-reg [54:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13______truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5;
-reg [54:0] truncD4_truncD3__truncD2_truncD1____truncD0_0__0______0;
+reg [74:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45______truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37;
+reg [74:0] truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29______truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
+reg [74:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13______truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5;
+reg [74:0] truncD4_truncD3__truncD2_truncD1____truncD0_0__0______0;
 
-reg [54:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45______truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37________truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29______truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
-reg [54:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13______truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5_________truncD4_truncD3__truncD2_truncD1____truncD0_0__0______0;
+reg [74:0] truncD52_truncD51__truncD50_truncD49____truncD48_truncD47__truncD46_truncD45______truncD44_truncD43__truncD42_truncD41____truncD40_truncD39__truncD38_truncD37________truncD36_truncD35__truncD34_truncD33____truncD32_truncD31__truncD30_truncD29______truncD28_truncD27__truncD26_truncD25____truncD24_truncD23__truncD22_truncD21;
+reg [74:0] truncD20_truncD19__truncD18_truncD17____truncD16_truncD15__truncD14_truncD13______truncD12_truncD11__truncD10_truncD9____truncD8_truncD7__truncD6_truncD5_________truncD4_truncD3__truncD2_truncD1____truncD0_0__0______0;
 
-reg [54:0] truncFinal;
+reg [74:0] truncFinal;
 
-          
 wire fractInexact;   
 reg roundit;
 
@@ -282,7 +286,8 @@ reg [1:0] roundMode_del_1,
           roundMode_del_4,
           roundMode_del_5,
           roundMode_del_6,
-          roundMode_del_7;
+          roundMode_del_7,
+          roundMode_del_8;
 
 reg sign_del_1,
     sign_del_2,
@@ -290,7 +295,8 @@ reg sign_del_1,
     sign_del_4,
     sign_del_5,
     sign_del_6,
-    sign_del_7;
+    sign_del_7,
+    sign_del_8;
 
 reg Away_del_1,
     Away_del_2,
@@ -298,11 +304,12 @@ reg Away_del_1,
     Away_del_4,
     Away_del_5,
     Away_del_6,
-    Away_del_7;
+    Away_del_7,
+    Away_del_8;
     
-reg [2:0] GRSq;
 
-wire [2:0] GRS;
+reg roundit_q;
+
 wire [51:0] mant;
 wire [10:0] biasedExp;
 wire zeroIn;
@@ -313,21 +320,36 @@ assign zeroIn = ~|wrdata[62:0];
 
 //-----stage 0 
 wire [66:0] FractWeight;
-wire [53:0] FractTrunc;
+wire [73:0] FractTrunc;
+wire [5:0]  subnLeadZeros;
+wire [5:0] subnAddrs;
 ROMweightsFract fractROM(
     .CLK    (CLK  ),
     .RESET  (RESET),
     .rden   (wren ),
     .rdaddrs(biasedExp[10:0]),
+    .mantissa  (wrdata[51:0]),
     .FractWeight (FractWeight),
     .FractTrunc  (FractTrunc),
-    .zeroIn (zeroIn)
+    .zeroIn (zeroIn),
+    .subnLeadZeros(subnLeadZeros),
+    .subnAddrs(subnAddrs)
     );    
+        
 
-reg normal;
+wire [79:0] truncFinalAdj;
+assign truncFinalAdj = {5'b0, truncFinal[74:0]};
+wire [79:0] chafFinalPad;
+assign chafFinalPad = {chafFinal[57:0], 22'b0};
+wire [79:0] chafTruncFinal;
+assign chafTruncFinal = truncFinalAdj + chafFinalPad;
+wire [5:0] carries;
+assign carries = chafTruncFinal[79:74];
+wire [73:0] remaining;
+assign remaining = chafTruncFinal[73:0];
+
 always @(posedge CLK) begin
     if (RESET) begin
-        normal <= 1;
         fractD52_fractD51 <= 0; 
         fractD50_fractD49 <= 0;
         fractD48_fractD47 <= 0; 
@@ -387,14 +409,12 @@ always @(posedge CLK) begin
         fractD52_fractD51__fractD50_fractD49____fractD48_fractD47__fractD46_fractD45______fractD44_fractD43__fractD42_fractD41____fractD40_fractD39__fractD38_fractD37________fractD36_fractD35__fractD34_fractD33____fractD32_fractD31__fractD30_fractD29______fractD28_fractD27__fractD26_fractD25____fractD24_fractD23__fractD22_fractD21 <= 0;
         fractD20_fractD19__fractD18_fractD17____fractD16_fractD15__fractD14_fractD13______fractD12_fractD11__fractD10_fractD9____fractD8_fractD7__fractD6_fractD5_________fractD4_fractD3__fractD2_fractD1____fractD0_0__0______0 <= 0;
 
-
         fractFinal <= 0;
         fractFinalq <= 0;
     end
     else begin
     //-----stage 2
-        normal <= |wrdata[62:52] && ~&wrdata[62:52];
-        fractD52_fractD51 <=  (          normal ? FractWeight         : 0) + (mant[51] ? { 1'b0, FractWeight[66: 1]} : 0);  
+        fractD52_fractD51 <=                      FractWeight              + (mant[51] ? { 1'b0, FractWeight[66: 1]} : 0);  
         fractD50_fractD49 <= ((mant[50] ? { 2'b0, FractWeight[66: 2]} : 0) + (mant[49] ? { 3'b0, FractWeight[66: 3]} : 0));
         fractD48_fractD47 <= ((mant[48] ? { 4'b0, FractWeight[66: 4]} : 0) + (mant[47] ? { 5'b0, FractWeight[66: 5]} : 0));
         fractD46_fractD45 <= ((mant[46] ? { 6'b0, FractWeight[66: 6]} : 0) + (mant[45] ? { 7'b0, FractWeight[66: 7]} : 0));
@@ -422,7 +442,6 @@ always @(posedge CLK) begin
         fractD2_fractD1   <= ((mant[ 2] ? {50'b0, FractWeight[66:50]} : 0) + (mant[ 1] ? {51'b0, FractWeight[66:51]} : 0));
         fractD0_0         <= ((mant[ 0] ? {52'b0, FractWeight[66:52]} : 0)) ;                                                  
                                                                                                                                    
-        
     //-----stage 3
         
         fractD52_fractD51__fractD50_fractD49 <= fractD52_fractD51 + fractD50_fractD49;
@@ -482,12 +501,13 @@ always @(posedge CLK) begin
                     fractD20_fractD19__fractD18_fractD17____fractD16_fractD15__fractD14_fractD13______fractD12_fractD11__fractD10_fractD9____fractD8_fractD7__fractD6_fractD5_________fractD4_fractD3__fractD2_fractD1____fractD0_0__0______0 ;
 
     //-----stage 8
-
-        fractFinalq <= fractFinal + truncFinal[54] + chafFinal[57:52] + roundit;
+    
+        fractFinalq <= fractFinal + carries + roundit;
     end             
 end
 
-assign  fractInexact = |GRSq;
+
+assign  fractInexact = roundit_q;
 assign bcdFractOut = fractFinalq;
 
 always @(posedge CLK) begin
@@ -621,7 +641,7 @@ always @(posedge CLK) begin
                                                                           chafD36_chafD35__chafD34_chafD33____chafD32_chafD31__chafD30_chafD29 +
                                                                           chafD28_chafD27__chafD26_chafD25____chafD24_chafD23__chafD22_chafD21;
         
-        chafD20_chafD19__chafD18_chafD17____chafD16_chafD15__chafD14_chafD13______chafD12_chafD11__chafD10_chafD9____chafD8_chafD7__chafD6_chafD5      <=
+        chafD20_chafD19__chafD18_chafD17____chafD16_chafD15__chafD14_chafD13______chafD12_chafD11__chafD10_chafD9____chafD8_chafD7__chafD6_chafD5 <=
                                                                           chafD20_chafD19__chafD18_chafD17____chafD16_chafD15__chafD14_chafD13 +
                                                                           chafD12_chafD11__chafD10_chafD9____chafD8_chafD7__chafD6_chafD5;
                                                                           
@@ -641,6 +661,7 @@ always @(posedge CLK) begin
 
         chafFinal <= chafD52_chafD51__chafD50_chafD49____chafD48_chafD47__chafD46_chafD45______chafD44_chafD43__chafD42_chafD41____chafD40_chafD39__chafD38_chafD37________chafD36_chafD35__chafD34_chafD33____chafD32_chafD31__chafD30_chafD29______chafD28_chafD27__chafD26_chafD25____chafD24_chafD23__chafD22_chafD21 +
                      chafD20_chafD19__chafD18_chafD17____chafD16_chafD15__chafD14_chafD13______chafD12_chafD11__chafD10_chafD9____chafD8_chafD7__chafD6_chafD5_________chafD4_chafD3__chafD2_chafD1____chafD0_0__0______0;
+        
     end                                                                                             
 end
 
@@ -709,33 +730,33 @@ always @(posedge CLK) begin
     end
     else begin
     //-----stage 2
-        truncD52_truncD51 <=  (         normal ?  FractTrunc         : 0) + (mant[51] ? { 1'b0, FractTrunc[53: 1]} : 0); 
-        truncD50_truncD49 <= ((mant[50] ? { 2'b0, FractTrunc[53: 2]} : 0) + (mant[49] ? { 3'b0, FractTrunc[53: 3]} : 0));
-        truncD48_truncD47 <= ((mant[48] ? { 4'b0, FractTrunc[53: 4]} : 0) + (mant[47] ? { 5'b0, FractTrunc[53: 5]} : 0));
-        truncD46_truncD45 <= ((mant[46] ? { 6'b0, FractTrunc[53: 6]} : 0) + (mant[45] ? { 7'b0, FractTrunc[53: 7]} : 0));
-        truncD44_truncD43 <= ((mant[44] ? { 8'b0, FractTrunc[53: 8]} : 0) + (mant[43] ? { 9'b0, FractTrunc[53: 9]} : 0));
-        truncD42_truncD41 <= ((mant[42] ? {10'b0, FractTrunc[53:10]} : 0) + (mant[41] ? {11'b0, FractTrunc[53:11]} : 0));
-        truncD40_truncD39 <= ((mant[40] ? {12'b0, FractTrunc[53:12]} : 0) + (mant[39] ? {13'b0, FractTrunc[53:13]} : 0));
-        truncD38_truncD37 <= ((mant[38] ? {14'b0, FractTrunc[53:14]} : 0) + (mant[37] ? {15'b0, FractTrunc[53:15]} : 0));
-        truncD36_truncD35 <= ((mant[36] ? {16'b0, FractTrunc[53:16]} : 0) + (mant[35] ? {17'b0, FractTrunc[53:17]} : 0));
-        truncD34_truncD33 <= ((mant[34] ? {18'b0, FractTrunc[53:18]} : 0) + (mant[33] ? {19'b0, FractTrunc[53:19]} : 0));
-        truncD32_truncD31 <= ((mant[32] ? {20'b0, FractTrunc[53:20]} : 0) + (mant[31] ? {21'b0, FractTrunc[53:21]} : 0));
-        truncD30_truncD29 <= ((mant[30] ? {22'b0, FractTrunc[53:22]} : 0) + (mant[29] ? {23'b0, FractTrunc[53:23]} : 0));
-        truncD28_truncD27 <= ((mant[28] ? {24'b0, FractTrunc[53:24]} : 0) + (mant[27] ? {25'b0, FractTrunc[53:25]} : 0));
-        truncD26_truncD25 <= ((mant[26] ? {26'b0, FractTrunc[53:26]} : 0) + (mant[25] ? {27'b0, FractTrunc[53:27]} : 0));
-        truncD24_truncD23 <= ((mant[24] ? {28'b0, FractTrunc[53:28]} : 0) + (mant[23] ? {29'b0, FractTrunc[53:29]} : 0));
-        truncD22_truncD21 <= ((mant[22] ? {30'b0, FractTrunc[53:30]} : 0) + (mant[21] ? {31'b0, FractTrunc[53:31]} : 0));
-        truncD20_truncD19 <= ((mant[20] ? {32'b0, FractTrunc[53:32]} : 0) + (mant[19] ? {33'b0, FractTrunc[53:33]} : 0));
-        truncD18_truncD17 <= ((mant[18] ? {34'b0, FractTrunc[53:34]} : 0) + (mant[17] ? {35'b0, FractTrunc[53:35]} : 0));
-        truncD16_truncD15 <= ((mant[16] ? {36'b0, FractTrunc[53:36]} : 0) + (mant[15] ? {37'b0, FractTrunc[53:37]} : 0));
-        truncD14_truncD13 <= ((mant[14] ? {38'b0, FractTrunc[53:38]} : 0) + (mant[13] ? {39'b0, FractTrunc[53:39]} : 0));
-        truncD12_truncD11 <= ((mant[12] ? {40'b0, FractTrunc[53:40]} : 0) + (mant[11] ? {41'b0, FractTrunc[53:41]} : 0));
-        truncD10_truncD9  <= ((mant[10] ? {42'b0, FractTrunc[53:42]} : 0) + (mant[ 9] ? {43'b0, FractTrunc[53:43]} : 0));
-        truncD8_truncD7   <= ((mant[ 8] ? {44'b0, FractTrunc[53:44]} : 0) + (mant[ 7] ? {45'b0, FractTrunc[53:45]} : 0));  
-        truncD6_truncD5   <= ((mant[ 6] ? {46'b0, FractTrunc[53:46]} : 0) + (mant[ 5] ? {47'b0, FractTrunc[53:47]} : 0));
-        truncD4_truncD3   <= ((mant[ 4] ? {48'b0, FractTrunc[53:48]} : 0) + (mant[ 3] ? {49'b0, FractTrunc[53:49]} : 0));  
-        truncD2_truncD1   <= ((mant[ 2] ? {50'b0, FractTrunc[53:50]} : 0) + (mant[ 1] ? {51'b0, FractTrunc[53:51]} : 0));
-        truncD0_0         <= ((mant[ 0] ? {52'b0, FractTrunc[53:52]} : 0)) ;
+        truncD52_truncD51 <=                      FractTrunc              + (mant[51] ? { 1'b0, FractTrunc[73: 1]} : 0); 
+        truncD50_truncD49 <= ((mant[50] ? { 2'b0, FractTrunc[73: 2]} : 0) + (mant[49] ? { 3'b0, FractTrunc[73: 3]} : 0));
+        truncD48_truncD47 <= ((mant[48] ? { 4'b0, FractTrunc[73: 4]} : 0) + (mant[47] ? { 5'b0, FractTrunc[73: 5]} : 0));
+        truncD46_truncD45 <= ((mant[46] ? { 6'b0, FractTrunc[73: 6]} : 0) + (mant[45] ? { 7'b0, FractTrunc[73: 7]} : 0));
+        truncD44_truncD43 <= ((mant[44] ? { 8'b0, FractTrunc[73: 8]} : 0) + (mant[43] ? { 9'b0, FractTrunc[73: 9]} : 0));
+        truncD42_truncD41 <= ((mant[42] ? {10'b0, FractTrunc[73:10]} : 0) + (mant[41] ? {11'b0, FractTrunc[73:11]} : 0));
+        truncD40_truncD39 <= ((mant[40] ? {12'b0, FractTrunc[73:12]} : 0) + (mant[39] ? {13'b0, FractTrunc[73:13]} : 0));
+        truncD38_truncD37 <= ((mant[38] ? {14'b0, FractTrunc[73:14]} : 0) + (mant[37] ? {15'b0, FractTrunc[73:15]} : 0));
+        truncD36_truncD35 <= ((mant[36] ? {16'b0, FractTrunc[73:16]} : 0) + (mant[35] ? {17'b0, FractTrunc[73:17]} : 0));
+        truncD34_truncD33 <= ((mant[34] ? {18'b0, FractTrunc[73:18]} : 0) + (mant[33] ? {19'b0, FractTrunc[73:19]} : 0));
+        truncD32_truncD31 <= ((mant[32] ? {20'b0, FractTrunc[73:20]} : 0) + (mant[31] ? {21'b0, FractTrunc[73:21]} : 0));
+        truncD30_truncD29 <= ((mant[30] ? {22'b0, FractTrunc[73:22]} : 0) + (mant[29] ? {23'b0, FractTrunc[73:23]} : 0));
+        truncD28_truncD27 <= ((mant[28] ? {24'b0, FractTrunc[73:24]} : 0) + (mant[27] ? {25'b0, FractTrunc[73:25]} : 0));
+        truncD26_truncD25 <= ((mant[26] ? {26'b0, FractTrunc[73:26]} : 0) + (mant[25] ? {27'b0, FractTrunc[73:27]} : 0));
+        truncD24_truncD23 <= ((mant[24] ? {28'b0, FractTrunc[73:28]} : 0) + (mant[23] ? {29'b0, FractTrunc[73:29]} : 0));
+        truncD22_truncD21 <= ((mant[22] ? {30'b0, FractTrunc[73:30]} : 0) + (mant[21] ? {31'b0, FractTrunc[73:31]} : 0));
+        truncD20_truncD19 <= ((mant[20] ? {32'b0, FractTrunc[73:32]} : 0) + (mant[19] ? {33'b0, FractTrunc[73:33]} : 0));
+        truncD18_truncD17 <= ((mant[18] ? {34'b0, FractTrunc[73:34]} : 0) + (mant[17] ? {35'b0, FractTrunc[73:35]} : 0));
+        truncD16_truncD15 <= ((mant[16] ? {36'b0, FractTrunc[73:36]} : 0) + (mant[15] ? {37'b0, FractTrunc[73:37]} : 0));
+        truncD14_truncD13 <= ((mant[14] ? {38'b0, FractTrunc[73:38]} : 0) + (mant[13] ? {39'b0, FractTrunc[73:39]} : 0));
+        truncD12_truncD11 <= ((mant[12] ? {40'b0, FractTrunc[73:40]} : 0) + (mant[11] ? {41'b0, FractTrunc[73:41]} : 0));
+        truncD10_truncD9  <= ((mant[10] ? {42'b0, FractTrunc[73:42]} : 0) + (mant[ 9] ? {43'b0, FractTrunc[73:43]} : 0));
+        truncD8_truncD7   <= ((mant[ 8] ? {44'b0, FractTrunc[73:44]} : 0) + (mant[ 7] ? {45'b0, FractTrunc[73:45]} : 0));  
+        truncD6_truncD5   <= ((mant[ 6] ? {46'b0, FractTrunc[73:46]} : 0) + (mant[ 5] ? {47'b0, FractTrunc[73:47]} : 0));
+        truncD4_truncD3   <= ((mant[ 4] ? {48'b0, FractTrunc[73:48]} : 0) + (mant[ 3] ? {49'b0, FractTrunc[73:49]} : 0));  
+        truncD2_truncD1   <= ((mant[ 2] ? {50'b0, FractTrunc[73:50]} : 0) + (mant[ 1] ? {51'b0, FractTrunc[73:51]} : 0));
+        truncD0_0         <= ((mant[ 0] ? {52'b0, FractTrunc[73:52]} : 0)) ;
                                                                  
     //-----stage 3
         
@@ -798,6 +819,7 @@ always @(posedge CLK) begin
 end
 
 
+
 always @(posedge CLK) begin 
     if (RESET) begin
         roundMode_del_1 <= roundMode;
@@ -807,6 +829,7 @@ always @(posedge CLK) begin
         roundMode_del_5 <= 0;
         roundMode_del_6 <= 0;
         roundMode_del_7 <= 0;
+        roundMode_del_8 <= 0;
     end    
     else begin
         roundMode_del_1 <= roundMode;
@@ -816,6 +839,7 @@ always @(posedge CLK) begin
         roundMode_del_5 <= roundMode_del_4;
         roundMode_del_6 <= roundMode_del_5;
         roundMode_del_7 <= roundMode_del_6;
+        roundMode_del_8 <= roundMode_del_7;
     end    
 end
 
@@ -828,6 +852,7 @@ always @(posedge CLK) begin
         sign_del_5 <= 0;
         sign_del_6 <= 0;
         sign_del_7 <= 0;
+        sign_del_8 <= 0;
     end
     else begin
         sign_del_1 <= wrdata[63];
@@ -837,6 +862,7 @@ always @(posedge CLK) begin
         sign_del_5 <= sign_del_4;
         sign_del_6 <= sign_del_5;
         sign_del_7 <= sign_del_6;
+        sign_del_8 <= sign_del_6;
     end
 end
 
@@ -849,6 +875,7 @@ always @(posedge CLK) begin
         Away_del_5 <= 0;
         Away_del_6 <= 0;
         Away_del_7 <= 0;
+        Away_del_8 <= 0;
     end
     else begin
         Away_del_1 <= Away;
@@ -858,22 +885,21 @@ always @(posedge CLK) begin
         Away_del_5 <= Away_del_4;
         Away_del_6 <= Away_del_5;
         Away_del_7 <= Away_del_6;
+        Away_del_8 <= Away_del_6;
     end    
-end    
+end                                                                            
 
 always @(posedge CLK)
-    if (RESET) GRSq <= 0;
-    else GRSq <= GRS;
-
-assign GRS = {truncFinal[53:51], |truncFinal[50:0]};
+    if (RESET) roundit_q <= 0;
+    else roundit_q <= roundit;                                                    
 
 always @(*)
         case(roundMode_del_7)
-            NEAREST : if (((GRS==3'b100) && (truncFinal[0] || Away_del_7) ) || (GRS[2] && |GRS[1:0]))roundit = 1'b1;    
+            NEAREST : if (|truncFinal[73:72]) roundit = 1'b1;    
                       else roundit = 1'b0;
-            POSINF  : if (~sign_del_7 && |GRS) roundit = 1'b1;
+            POSINF  : if (~sign_del_7 && |truncFinal[73:0]) roundit = 1'b1;
                       else roundit = 1'b0;
-            NEGINF  : if (sign_del_7 && |GRS) roundit = 1'b1;
+            NEGINF  : if (sign_del_7 && |truncFinal[73:0]) roundit = 1'b1;
                       else roundit = 1'b0;
             ZERO    : roundit = 1'b0;
         endcase

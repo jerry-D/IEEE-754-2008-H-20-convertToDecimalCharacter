@@ -282,6 +282,8 @@ binToBCD10 h20exp(
     .decDigit0(expDigit0)
     );
 
+wire [5:0] subnLeadZeros;
+wire [5:0] subnAddrs;
 H20IntegerPart h20int(      //this is 8 clocks deep
     .CLK          (CLK            ),  
     .RESET        (RESET          ),
@@ -292,7 +294,8 @@ H20IntegerPart h20int(      //this is 8 clocks deep
     .bcdIntegerOut(bcdIntOut      ),  
     .intInexact   (intInexact     ),
     .fractMask    (fractMask      ),
-    .fractionOnly (fractionOnly_del_1 )
+    .fractionOnly (fractionOnly_del_1 ),
+    .subnLeadZeros(subnLeadZeros )
     );
 
 binToBCD68 bcdInt(     //this is 8 clocks deep
@@ -323,15 +326,17 @@ binToBCD68 bcdInt(     //this is 8 clocks deep
     );
 
 H20FractPart h20fract(      //this is 8 clocks deep
-    .CLK          (CLK              ),
-    .RESET        (RESET            ),
-    .roundMode    (round_mode       ),   
-    .Away         (Away             ),
-    .wren         (wren             ),
-    .wrdata       (wrdata           ),
-    .bcdFractOut  (bcdFractOut      ),
-    .fractInexact (fractInexact     ),
-    .fractMask    (fractMask        )
+    .CLK          (CLK          ),
+    .RESET        (RESET        ),
+    .roundMode    (round_mode   ),   
+    .Away         (Away         ),
+    .wren         (wren         ),
+    .wrdata       (wrdata       ),
+    .bcdFractOut  (bcdFractOut  ),
+    .fractInexact (fractInexact ),
+    .fractMask    (fractMask    ),
+    .subnLeadZeros(subnLeadZeros),
+    .subnAddrs    (subnAddrs    )
     );     
                           
 binToBCD68 bcdFract(       //this is 8 clocks deep
@@ -366,7 +371,8 @@ baseExpROM ExpROM(
     .RESET  (RESET  ),
     .rden   (wren_del_15),
     .rdaddrs(exp_del_15),
-    .baseExp(baseExp)
+    .baseExp(baseExp),
+    .subnAddrs(subnAddrs)
     );    
 
 always @(posedge CLK) begin
