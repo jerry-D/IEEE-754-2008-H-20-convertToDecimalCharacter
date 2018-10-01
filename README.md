@@ -61,7 +61,7 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
 
       +0000000073786976294838206464e+000       4410000000000000   //73786976294838206464
 
-      +0000000022250738585072008889e-327       000FFFFFFFFFFFFF   //largest (subnormal)
+      +000000002225073858507200889e-326       000FFFFFFFFFFFFF   //largest (subnormal)
 
       -0000000000000000000000000015e-001       BFF8000000000000   //-1.5
 
