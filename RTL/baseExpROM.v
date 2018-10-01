@@ -61,7 +61,8 @@ module baseExpROM (
     RESET,
     rden,
     rdaddrs,
-    baseExp
+    baseExp,
+    subnAddrs
     );    
 
 input  CLK;
@@ -69,11 +70,34 @@ input  RESET;
 input  rden;
 input  [10:0] rdaddrs;
 output [8:0]  baseExp;
+input [5:0] subnAddrs;
 
 
 //(* ram_style = "distributed" *) 
 reg  [8:0] RAMA[2047:0];  //9 bits x 2048
-reg  [8:0] baseExp;
+reg  [8:0] RAMB[63:0];  //9 bits x 63
+reg  [8:0] baseExp_q;
+reg  [8:0] subnExp_q;
+reg subnormal;
+
+reg [5:0] subnAddrs_del_1,
+          subnAddrs_del_2,
+          subnAddrs_del_3,
+          subnAddrs_del_4,
+          subnAddrs_del_5,
+          subnAddrs_del_6,
+          subnAddrs_del_7,
+          subnAddrs_del_8,
+          subnAddrs_del_9,
+          subnAddrs_del_10,
+          subnAddrs_del_11,
+          subnAddrs_del_12,
+          subnAddrs_del_13,
+          subnAddrs_del_14,
+          subnAddrs_del_15;
+
+wire  [8:0] baseExp;
+assign baseExp = subnormal ? subnExp_q : baseExp_q;
 
 initial begin
 
@@ -2125,13 +2149,124 @@ initial begin
  RAMA[   2] =  308; 
  RAMA[   1] =  308; 
  RAMA[   0] =  308;  //subnormal
-
 end
 
+initial begin
+ RAMB[  63] =  0;      //
+ RAMB[  62] =  0;      //
+ RAMB[  61] =  0;      //
+ RAMB[  60] =  0;      //
+ RAMB[  59] =  0;      //
+ RAMB[  58] =  0;      //
+ RAMB[  57] =  0;      //
+ RAMB[  56] =  0;      //
+ RAMB[  55] =  0;      //
+ RAMB[  54] =  0;      //
+ RAMB[  53] =  0;      //
+ RAMB[  52] =  0;      //
+ RAMB[  51] =  308;    //    -308
+ RAMB[  50] =  309;    //    -309
+ RAMB[  49] =  309;    //    -309
+ RAMB[  48] =  309;    //    -309
+ RAMB[  47] =  310;    //    -310
+ RAMB[  46] =  310;    //    -310
+ RAMB[  45] =  310;    //    -310
+ RAMB[  44] =  311;    //    -311
+ RAMB[  43] =  311;    //    -311
+ RAMB[  42] =  311;    //    -311
+ RAMB[  41] =  311;    //    -311
+ RAMB[  40] =  312;    //    -312
+ RAMB[  39] =  312;    //    -312
+ RAMB[  38] =  312;    //    -312
+ RAMB[  37] =  313;    //    -313
+ RAMB[  36] =  313;    //    -313
+ RAMB[  35] =  313;    //    -313
+ RAMB[  34] =  314;    //    -314
+ RAMB[  33] =  314;    //    -314
+ RAMB[  32] =  314;    //    -314
+ RAMB[  31] =  314;    //    -314
+ RAMB[  30] =  315;    //    -315
+ RAMB[  29] =  315;    //    -315
+ RAMB[  28] =  315;    //    -315
+ RAMB[  27] =  316;    //    -316
+ RAMB[  26] =  316;    //    -316
+ RAMB[  25] =  316;    //    -316
+ RAMB[  24] =  317;    //    -317
+ RAMB[  23] =  317;    //    -317
+ RAMB[  22] =  317;    //    -317
+ RAMB[  21] =  317;    //    -317
+ RAMB[  20] =  318;    //    -318
+ RAMB[  19] =  318;    //    -318
+ RAMB[  18] =  318;    //    -318
+ RAMB[  17] =  319;    //    -319
+ RAMB[  16] =  319;    //    -319
+ RAMB[  15] =  319;    //    -319
+ RAMB[  14] =  320;    //    -320
+ RAMB[  13] =  320;    //    -320
+ RAMB[  12] =  320;    //    -320
+ RAMB[  11] =  320;    //    -320
+ RAMB[  10] =  321;    //    -321
+ RAMB[   9] =  321;    //    -321
+ RAMB[   8] =  321;    //    -321
+ RAMB[   7] =  322;    //    -322
+ RAMB[   6] =  322;    //    -322
+ RAMB[   5] =  322;    //    -322
+ RAMB[   4] =  323;    //    -323
+ RAMB[   3] =  323;    //    -323
+ RAMB[   2] =  323;    //    -323
+ RAMB[   1] =  324;    //    -324
+ RAMB[   0] =  324;    //    -324
+end
 
 always @(posedge CLK) begin
-    if (RESET) baseExp <= 0;
-    else if (rden) baseExp <= RAMA[rdaddrs];
+    if (RESET) baseExp_q <= 0;
+    else if (rden) baseExp_q <= RAMA[rdaddrs];
+end
+
+always @(posedge CLK)
+    if (RESET) subnormal <= 0;
+    else subnormal <= ~|rdaddrs;
+
+always @(posedge CLK) begin
+    if (RESET) subnExp_q <= 0;
+    else if (rden && ~|rdaddrs) subnExp_q <= RAMB[subnAddrs_del_15];
+end
+
+always @(posedge CLK) begin
+    if (RESET) begin
+        subnAddrs_del_1  <= 0;
+        subnAddrs_del_2  <= 0;
+        subnAddrs_del_3  <= 0;
+        subnAddrs_del_4  <= 0;
+        subnAddrs_del_5  <= 0;
+        subnAddrs_del_6  <= 0;
+        subnAddrs_del_7  <= 0;
+        subnAddrs_del_8  <= 0;
+        subnAddrs_del_9  <= 0;
+        subnAddrs_del_10 <= 0;
+        subnAddrs_del_11 <= 0;
+        subnAddrs_del_12 <= 0;
+        subnAddrs_del_13 <= 0;
+        subnAddrs_del_14 <= 0;
+        subnAddrs_del_15 <= 0;
+    end
+    else begin
+        subnAddrs_del_1  <= subnAddrs       ;
+        subnAddrs_del_2  <= subnAddrs_del_1 ;
+        subnAddrs_del_3  <= subnAddrs_del_2 ;
+        subnAddrs_del_4  <= subnAddrs_del_3 ;
+        subnAddrs_del_5  <= subnAddrs_del_4 ;
+        subnAddrs_del_6  <= subnAddrs_del_5 ;
+        subnAddrs_del_7  <= subnAddrs_del_6 ;
+        subnAddrs_del_8  <= subnAddrs_del_7 ;
+        subnAddrs_del_9  <= subnAddrs_del_8 ;
+        subnAddrs_del_10 <= subnAddrs_del_9 ;
+        subnAddrs_del_11 <= subnAddrs_del_10;
+        subnAddrs_del_12 <= subnAddrs_del_11;
+        subnAddrs_del_13 <= subnAddrs_del_12;
+        subnAddrs_del_14 <= subnAddrs_del_13;
+        subnAddrs_del_15 <= subnAddrs_del_14;
+    end                                      
 end
 
 endmodule
