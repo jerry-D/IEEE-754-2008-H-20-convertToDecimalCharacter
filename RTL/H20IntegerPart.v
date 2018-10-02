@@ -823,7 +823,7 @@ end
 
 always @(posedge CLK) begin 
     if (RESET) begin
-        roundMode_del_1 <= 0;
+        roundMode_del_1 <= roundMode;
         roundMode_del_2 <= 0;
         roundMode_del_3 <= 0;
         roundMode_del_4 <= 0;
@@ -882,16 +882,15 @@ always @(posedge CLK) begin
         Away_del_6 <= Away_del_5;
         Away_del_7 <= Away_del_6;
     end    
-end  
-
+end                                                                            
 
 always @(posedge CLK)
     if (RESET) roundit_q <= 0;
-    else roundit_q <= roundit;                                                    
-
+    else roundit_q <= roundit;  
+    
 always @(*)
         case(roundMode_del_7)
-            NEAREST : if (|truncFinal[73:72]) roundit = 1'b1;    
+            NEAREST : if (|truncFinal[73:72] || (Away_del_7 && ~|truncFinal[73:0])) roundit = 1'b1;    
                       else roundit = 1'b0;
             POSINF  : if (~sign_del_7 && |truncFinal[73:0]) roundit = 1'b1;
                       else roundit = 1'b0;

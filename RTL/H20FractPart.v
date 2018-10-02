@@ -286,8 +286,7 @@ reg [1:0] roundMode_del_1,
           roundMode_del_4,
           roundMode_del_5,
           roundMode_del_6,
-          roundMode_del_7,
-          roundMode_del_8;
+          roundMode_del_7;
 
 reg sign_del_1,
     sign_del_2,
@@ -295,8 +294,7 @@ reg sign_del_1,
     sign_del_4,
     sign_del_5,
     sign_del_6,
-    sign_del_7,
-    sign_del_8;
+    sign_del_7;
 
 reg Away_del_1,
     Away_del_2,
@@ -304,8 +302,7 @@ reg Away_del_1,
     Away_del_4,
     Away_del_5,
     Away_del_6,
-    Away_del_7,
-    Away_del_8;
+    Away_del_7;
     
 
 reg roundit_q;
@@ -829,7 +826,6 @@ always @(posedge CLK) begin
         roundMode_del_5 <= 0;
         roundMode_del_6 <= 0;
         roundMode_del_7 <= 0;
-        roundMode_del_8 <= 0;
     end    
     else begin
         roundMode_del_1 <= roundMode;
@@ -839,7 +835,6 @@ always @(posedge CLK) begin
         roundMode_del_5 <= roundMode_del_4;
         roundMode_del_6 <= roundMode_del_5;
         roundMode_del_7 <= roundMode_del_6;
-        roundMode_del_8 <= roundMode_del_7;
     end    
 end
 
@@ -852,7 +847,6 @@ always @(posedge CLK) begin
         sign_del_5 <= 0;
         sign_del_6 <= 0;
         sign_del_7 <= 0;
-        sign_del_8 <= 0;
     end
     else begin
         sign_del_1 <= wrdata[63];
@@ -862,7 +856,6 @@ always @(posedge CLK) begin
         sign_del_5 <= sign_del_4;
         sign_del_6 <= sign_del_5;
         sign_del_7 <= sign_del_6;
-        sign_del_8 <= sign_del_6;
     end
 end
 
@@ -875,7 +868,6 @@ always @(posedge CLK) begin
         Away_del_5 <= 0;
         Away_del_6 <= 0;
         Away_del_7 <= 0;
-        Away_del_8 <= 0;
     end
     else begin
         Away_del_1 <= Away;
@@ -885,17 +877,16 @@ always @(posedge CLK) begin
         Away_del_5 <= Away_del_4;
         Away_del_6 <= Away_del_5;
         Away_del_7 <= Away_del_6;
-        Away_del_8 <= Away_del_6;
     end    
 end                                                                            
 
 always @(posedge CLK)
     if (RESET) roundit_q <= 0;
-    else roundit_q <= roundit;                                                    
-
+    else roundit_q <= roundit;  
+    
 always @(*)
         case(roundMode_del_7)
-            NEAREST : if (|truncFinal[73:72]) roundit = 1'b1;    
+            NEAREST : if (|truncFinal[73:72] || (Away_del_7 && ~|truncFinal[73:0])) roundit = 1'b1;    
                       else roundit = 1'b0;
             POSINF  : if (~sign_del_7 && |truncFinal[73:0]) roundit = 1'b1;
                       else roundit = 1'b0;
