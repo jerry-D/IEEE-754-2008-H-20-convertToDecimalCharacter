@@ -456,7 +456,7 @@ always @(*)
     else if (fractAllZeros) begin //integer only
           expSign = char_Plus;
           resultSign = wrdata_del_16[63] ? char_Minus : char_Plus;                                          
-          resultExponent = baseExp + |intDigit20;                                                           
+          resultExponent = baseExp;                                                           
           integerFractFinal = {{20{8'h30}}, integerPart};                                                   
     end                                                                                                     
     else begin //fraction part present with or without integer part 
