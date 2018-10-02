@@ -117,7 +117,7 @@ func_binDecH20 t(
       #22
       @(posedge clk);
       reset = 1'b0;
-      #1 wrdata = {1'b0, 11'h7FF, 1'b1, 51'h0_C001_FEED_C0DE}; //qNaNwith payload
+      #1 wrdata = {1'b0, 11'h7FF, 1'b1, 51'h0_C001_FEED_C0DE}; //qNaN with payload
       wraddrs = 4'h0;
       wren = 1'b1;      
       @(posedge clk);
@@ -130,19 +130,20 @@ func_binDecH20 t(
      #1 wrdata = 64'h43B203AF9EE75616;   //1298074214633707008
       wraddrs = 4'h3;
       @(posedge clk);
-     #1 wrdata = 64'h52FB5E7E08CA3A8F;   //5.5751862996326554371e91
+     #1 wrdata = 64'h52FB5E7E08CA3A8F;   //55751862996326554871e+072
       wraddrs = 4'h4;
       @(posedge clk);
      #1 wrdata = 64'hFFF0000000000000;  //-infinity
       wraddrs = 4'h5;
       @(posedge clk);
-     #1 wrdata = 64'h323546DB9A6A41D7;  //78919994321e-77
+     #1 wrdata = 64'h323546DB9A6A41D7;  //78919994320999994169e-086
       wraddrs = 4'h6;
       @(posedge clk);
      #1 wrdata = 64'h8000000000000000;   //-0
       wraddrs = 4'h7;
       @(posedge clk);
-     #1 wrdata = 64'h3FF0000000000000;   //+1
+     #1 wrdata = 64'h3FF8000000000000;   //+1.5
+//     #1 wrdata = 64'h3FF0000000000000;   //+1.0
       wraddrs = 4'h8;
       @(posedge clk);
      #1 wrdata = 64'hFBFF000000000001;  //-1.88815458970875003819e250
@@ -154,7 +155,8 @@ func_binDecH20 t(
      #1 wrdata = 64'h000FFFFFFFFFFFFF; //largest subnormal
       wraddrs = 4'hB;
       @(posedge clk);
-     #1 wrdata = 64'hBFF0000000000000;   //-1
+     #1 wrdata = 64'hBFF8000000000000;   //-1.5
+//     #1 wrdata = 64'hBFF0000000000000;   //-1.0
       wraddrs = 4'hC;
       @(posedge clk);
      #1 wrdata = 64'h7FF0000000000000;  //+infinity
@@ -163,7 +165,7 @@ func_binDecH20 t(
      #1 wrdata = 64'h7FEFFFFFFFFFFFFF;  //largest integer
       wraddrs = 4'hE;
       @(posedge clk);
-     #1 wrdata = 64'h417FFFFFFE26BBBA;  //33554431.88445637375116348266
+     #1 wrdata = 64'h417FFFFFFF135DDD;  //33554431942281687558174133e-20
       wraddrs = 4'hF;
       @(posedge clk); 
       #1 wren = 1'b0;      
