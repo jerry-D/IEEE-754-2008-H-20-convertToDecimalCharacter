@@ -75,7 +75,7 @@ input [5:0] subnAddrs;
 
 //(* ram_style = "distributed" *) 
 reg  [8:0] RAMA[2047:0];  //9 bits x 2048
-reg  [8:0] RAMB[63:0];  //9 bits x 63
+reg  [8:0] RAMB[51:0];  //9 bits x 63
 reg  [8:0] baseExp_q;
 reg  [8:0] subnExp_q;
 reg subnormal;
@@ -2152,18 +2152,6 @@ initial begin
 end
 
 initial begin
- RAMB[  63] =  0;      //
- RAMB[  62] =  0;      //
- RAMB[  61] =  0;      //
- RAMB[  60] =  0;      //
- RAMB[  59] =  0;      //
- RAMB[  58] =  0;      //
- RAMB[  57] =  0;      //
- RAMB[  56] =  0;      //
- RAMB[  55] =  0;      //
- RAMB[  54] =  0;      //
- RAMB[  53] =  0;      //
- RAMB[  52] =  0;      //
  RAMB[  51] =  308;    //    -308
  RAMB[  50] =  309;    //    -309
  RAMB[  49] =  309;    //    -309
@@ -2217,6 +2205,8 @@ initial begin
  RAMB[   1] =  324;    //    -324
  RAMB[   0] =  324;    //    -324
 end
+
+
 
 always @(posedge CLK) begin
     if (RESET) baseExp_q <= 0;

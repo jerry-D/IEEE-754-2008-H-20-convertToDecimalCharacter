@@ -170,7 +170,7 @@ output intInexact  ;
 output fractionOnly;
 output [8:0] baseExp;
 
-reg [63:0] exp_del_1,
+reg [10:0] exp_del_1,
            exp_del_2,
            exp_del_3,
            exp_del_4,
@@ -186,7 +186,7 @@ reg [63:0] exp_del_1,
            exp_del_14,
            exp_del_15;
 
-reg [63:0] wren_del_1,
+reg        wren_del_1,
            wren_del_2,
            wren_del_3,
            wren_del_4,
