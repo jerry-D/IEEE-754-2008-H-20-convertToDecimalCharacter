@@ -39,7 +39,7 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
 
       +3355443194222818687558174133e-020       417FFFFFFF135DDD   //33554431.94222818687558174133
       
-      +0000000179769313486231570815e+289       7FEFFFFFFFFFFFFF   //largest integer
+      +0000000179769313486231570815e+288       7FEFFFFFFFFFFFFF   //largest integer
 
                    +nan 0 C001 FEED C0DE       7FF8C001FEEDC0DE   //quiet NaN with payload
                    
@@ -59,7 +59,7 @@ Below are actual results of sixteen consecutive pushes into the operator, one ev
 
       +0000000000000000000000000015e-001       3FF8000000000000   //+1.5
 
-      -0000000188815458970875003821e+270       FBFF000000000001   //-1.88815458970875003821e250
+      -0000000188815458970875003821e+269       FBFF000000000001   //-1.88815458970875003821e250
 
       +0000000073786976294838206464e+000       4410000000000000   //73786976294838206464
 
