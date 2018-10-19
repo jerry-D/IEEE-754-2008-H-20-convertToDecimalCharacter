@@ -7,7 +7,7 @@
 
 (September 26, 2018) Since publishing yesterday, an IEEE 754-2008 expert discovered a couple issues with the design that are presently being corrected.  Namely, inadeqate number of bits used for computing 20 decimal digits and gradual underflow representation of subnormals.  Another issue, discovered post-facto, is the manner in which values are computed.  It is anticipated that corrections will result in a more simplified design and lower gate utilization.
 
-(September 25, 2018) Written in Verilog RTL for implementation in Xilinx UltraScale and UltraScale+ brand FPGAs, this is probably the world's only synthesizable IEEE 754-2008 compliant, H=20 binary64 format "convertFromDecimalCharacter" floating-point operator.  It is designed for ready incorporation into the new 64-bit, IEEE 754-2008 Floating-Point Instruction Set Architecture (ISA) CPU presently in development.
+(September 25, 2018) Written in Verilog RTL for implementation in Xilinx UltraScale and UltraScale+ brand FPGAs, this is probably the world's only synthesizable IEEE 754-2008 compliant, H=20 binary64 format "convertToDecimalCharacter" floating-point operator.  It is designed for ready incorporation into the new 64-bit, IEEE 754-2008 Floating-Point Instruction Set Architecture (ISA) CPU presently in development.
 
 Its pipeline is only 17 clocks deep, meaning that up to sixteen 34-byte results will be available for reading after 17 clocks from the first write of a binary64 format operand into each of this operator's sixteen 64-bit memory-mapped inputs.  
 
@@ -19,7 +19,7 @@ To accommodate easier implementation of its companion "convertFromDecimalCharact
 
 The exponent value is referenced relative to the last digit in the significand of the decimalCharacterSequence.  
 
-Here is some example code written in SYMPL Intermediate Language (IL) that computes sixteen, correctly rounded, binary64 format decimalCharacterSequences and writes the computed results out byte-addressable system memory:
+Here is some example code written in SYMPL Intermediate Language (IL) that computes sixteen, correctly rounded, binary64 format decimalCharacterSequences and writes the computed results out to byte-addressable system memory:
 
     uw AR0 = uw:#listStart           ;load read pointer with starting address of list
     uw AR1 = uw:#cnvTDCS.0           ;load write pointer with address of first operator input buffer
